@@ -5,9 +5,8 @@ import 'vanilla-toast/vanilla-toast.css';
 var table;
 
 const generateTable = async () => {
-    const response = await fetch('http://localhost:5000/api/items');
+    const response = await fetch('https://capbay-test-api.onrender.com/api/items');
     const data = await response.json();
-    console.log(data);
     const dataSet = data.items.map((product) => {
         return [product._id, product.name, product.color];
     });
@@ -118,7 +117,7 @@ const handleDeleteItemButtonClick = function (e) {
 };
 
 const addItem = async (nameInput, colorInput) => {
-    await fetch('http://localhost:5000/api/items', {
+    await fetch('https://capbay-test-api.onrender.com/api/items', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -137,7 +136,7 @@ const addItem = async (nameInput, colorInput) => {
 };
 
 const editItem = async (id, nameInput, colorInput) => {
-    await fetch('http://localhost:5000/api/items/' + id, {
+    await fetch('https://capbay-test-api.onrender.com/api/items/' + id, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
@@ -156,7 +155,7 @@ const editItem = async (id, nameInput, colorInput) => {
 };
 
 const deleteItem = async (id) => {
-    fetch('http://localhost:5000/api/items/' + id, {
+    fetch('https://capbay-test-api.onrender.com/api/items/' + id, {
         method: 'DELETE',
     })
         .then(() => {
