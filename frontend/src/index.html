@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bootstrap w/ Vite</title>
+</head>
+
+<body>
+  <div class="main">
+    <div id="navbar"></div>
+    <table id="table" class="table table-striped" width="100%"></table>
+    <div class="edit-modal-container">
+      <div class="modal fade" id="edit-modal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h3 class="modal-title fs-5" id="editModalLabel">Edit Data</h3>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form>
+                <p id="edit-form-title-id"></p>
+                <div>
+                  <label for="name" class="form-label">Name: </label>
+                  <input type="text" class="form-control edit-name-input" id="name" required>
+                </div>
+                <div>
+                  <label for="color" class="form-label">Color: </label>
+                  <input type="text" class="form-control edit-color-input" id="color" required>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary" id="edit-item-button" data-bs-dismiss="modal">Save Changes</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="delete-modal-container">
+        <div class="modal fade" id="delete-modal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="deleteModalLabel">Are you sure?</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <p id="delete-form-title-id"></p>
+                <hr>
+                This action cannot be undone.
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <form>
+                  <button type="submit" class="btn btn-danger" id="delete-item-button" data-bs-dismiss="modal">Delete</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="add-modal-container">
+        <div class="modal fade" id="add-modal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h3 class="modal-title fs-5" id="addModalLabel">Add Item</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form>
+                  <h5 id="add-form-title-id"></h5>
+                  <div>
+                    <label for="name" class="form-label">Name: </label>
+                    <input type="text" class="form-control add-name-input" id="name" required>
+                  </div>
+                  <div>
+                    <label for="color" class="form-label">Color: </label>
+                    <input type="text" class="form-control add-color-input" id="color" required>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" id="add-item-button" data-bs-dismiss="modal">Add Item</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <script type="module" src="./js/main.js"></script>
+      <script type="module" src="./js/nav.js"></script>
+      <script type="module" src="./js/table.js"></script>
+</body>
+
+</html>
