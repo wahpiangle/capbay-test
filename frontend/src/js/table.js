@@ -2,15 +2,9 @@ import DataTable from 'datatables.net-dt';
 import * as vanillaToast from 'vanilla-toast';
 import 'vanilla-toast/vanilla-toast.css';
 
-var table;
+let table;
 
-const generateTable = async () => {
-    const response = await fetch('https://capbay-test-api.onrender.com/api/items');
-    const data = await response.json();
-    const dataSet = data.items.map((product) => {
-        return [product._id, product.name, product.color];
-    });
-
+const initTable = (dataSet) => {
     if (table) {
         table.destroy();
     }
@@ -24,7 +18,7 @@ const generateTable = async () => {
                 title: 'Actions',
                 render: function (row, data, type) {
                     return `<div>
-                        <button class="btn btn-primary edit-button" data-id="${type[0]}" data-name="${type[1]}" data-color="${type[2]}"data-bs-toggle="modal" data-bs-target="#edit-modal">Edit</button>
+                        <button class="btn btn-primary edit-button" data-id="${type[0]}" data-name="${type[1]}" data-color="${type[2]}" data-bs-toggle="modal" data-bs-target="#edit-modal">Edit</button>
                         <button class="btn btn-danger delete-button" data-id="${type[0]}" data-bs-toggle="modal" data-bs-target="#delete-modal">Delete</button>
                     </div>`;
                 },
@@ -32,6 +26,7 @@ const generateTable = async () => {
         ],
         data: dataSet,
     });
+
     let addItemButton = document.querySelector('#add-item-button');
     let editButtonList = document.querySelectorAll('.edit-button');
     let editItemButton = document.querySelector('#edit-item-button');
@@ -39,7 +34,20 @@ const generateTable = async () => {
     let deleteItemButton = document.querySelector('#delete-item-button');
     removeEventListeners(addItemButton, editButtonList, editItemButton, deleteButtonList, deleteItemButton);
     addEvents(addItemButton, editButtonList, editItemButton, deleteButtonList, deleteItemButton);
-    return Promise.resolve();
+};
+
+const generateTable = async () => { //call api to generate table dataset
+    try {
+        const response = await fetch('https://capbay-test-api.onrender.com/api/items');
+        const data = await response.json();
+        const dataSet = data.items.map((product) => {
+            return [product._id, product.name, product.color];
+        });
+
+        initTable(dataSet);
+    } catch (err) {
+        console.error(err);
+    }
 };
 
 const removeEventListeners = (addItemButton, editButtonList, editItemButton, deleteButtonList, deleteItemButton) => {
@@ -48,13 +56,13 @@ const removeEventListeners = (addItemButton, editButtonList, editItemButton, del
         const dataId = editButton.getAttribute('data-id');
         const dataName = editButton.getAttribute('data-name');
         const dataColor = editButton.getAttribute('data-color');
-        editButton.removeEventListener('click', function() {
+        editButton.removeEventListener('click', function () {
             handleEditItemClick(dataId, dataName, dataColor);
         });
     });
     editItemButton.removeEventListener('click', handleEditItemButtonClick);
     deleteButtonList.forEach(function (deleteButton) {
-        deleteButton.removeEventListener('click', function(){
+        deleteButton.removeEventListener('click', function () {
             handleDeleteItemClick(dataId);
         });
     });
@@ -67,14 +75,14 @@ const addEvents = (addItemButton, editButtonList, editItemButton, deleteButtonLi
         const dataId = editButton.getAttribute('data-id');
         const dataName = editButton.getAttribute('data-name');
         const dataColor = editButton.getAttribute('data-color');
-        editButton.addEventListener('click', function() {
+        editButton.addEventListener('click', function () {
             handleEditItemClick(dataId, dataName, dataColor);
         });
     });
     editItemButton.addEventListener('click', handleEditItemButtonClick);
     deleteButtonList.forEach(function (deleteButton) {
         const dataId = deleteButton.getAttribute('data-id');
-        deleteButton.addEventListener('click', function(){
+        deleteButton.addEventListener('click', function () {
             handleDeleteItemClick(dataId);
         });
     });
@@ -117,6 +125,15 @@ const handleDeleteItemButtonClick = function (e) {
 };
 
 const addItem = async (nameInput, colorInput) => {
+    if (!nameInput || !colorInput) {
+        vanillaToast.error('Please fill in all fields', { fadeDuration: 200 });
+        return;
+    }
+    //make colorInput match regex [a-zA-Z]+
+    if (!colorInput.match(/^[a-zA-Z]+$/)) {
+        vanillaToast.error('Please enter a valid color', { fadeDuration: 200 });
+        return;
+    }
     await fetch('https://capbay-test-api.onrender.com/api/items', {
         method: 'POST',
         headers: {
@@ -169,6 +186,10 @@ const deleteItem = async (id) => {
         });
 };
 
+//to initialize table to have no data to display the table indicating no data is available
+initTable([]);
+
+//when api call is successful, table data will be filled in
 generateTable()
     .catch((err) => {
         console.error(err);
